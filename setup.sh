@@ -54,7 +54,7 @@ zfsonlinux
 )
 
 buildlog="/var/pve/build.log"
-pvedir="/var/pve/"
+pvedir="/var/pve"
 
 
 if [ -n "$guowai" ];then
@@ -76,23 +76,20 @@ touch $buildlog
 cd $pvedir
 for pvepackage in ${pvepackages[@]}
 do 
+cd $pvedir
 #clone
 echo "$(date +%Y%m%d-%H:%M:%S) clone $pvepackage" >> $buildlog
 git clone https://git.proxmox.com/git/$pvepackage.git;
 echo "$(date +%Y%m%d-%H:%M:%S) clone $pvepackage done" >> $buildlog
-
 #make
 echo "$(date +%Y%m%d-%H:%M:%S) making $pvepackage "  >> $buildlog
 cd $pvedir/$pvepackage
-
-
 #check mk-dep
-if [ -f "$pvedir/$pvepackage/debian/control" ];then
+if [ -z  "$pvedir/$pvepackage/debian/control" ];then
 yes|mk-build-deps --install --remove
 else
 echo "no debian/control"
 fi
-
 make clean && make deb && echo "$(date +%Y%m%d-%H:%M:%S) $pvepackage build succes" >>$buildlog ||echo "$(date +%Y%m%d-%H:%M:%S) $pvepackage build failed" >>$buildlog;
 done
 
