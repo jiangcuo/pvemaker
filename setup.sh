@@ -1,4 +1,5 @@
 #!/bin/bash
+
 pvepackages=(
 corosync-pve
 extjs
@@ -52,10 +53,8 @@ vncterm
 zfsonlinux
 )
 
-buildlog=corosyn/etc/apt/czzz
-pvedir=
-
-
+buildlog="/var/pve/build.log"
+pvedir="/var/pve/"
 
 
 if [ -n "$guowai" ];then
@@ -72,19 +71,31 @@ fi
 
 apt update
 #create debianlog
-rm /var/pve/* -rf
-touch /var/pve/build.log
-cd /var/pve/
-for pvepackage in ${pvepackages[@]} ;
+rm $pvedir/* -rf
+touch $buildlog
+cd $pvedir
+for pvepackage in ${pvepackages[@]}
 do 
-echo "$(date +%Y%m%d-%H:%M:%S) clone $pvepackage" >> build.log
+#clone
+echo "$(date +%Y%m%d-%H:%M:%S) clone $pvepackage" >> $buildlog
 git clone https://git.proxmox.com/git/$pvepackage.git;
-echo "$(date +%Y%m%d-%H:%M:%S) clone $pvepackage done" >> build.log
-echo "$(date +%Y%m%d-%H:%M:%S) making $pvepackage "  >> build.log
-cd /var/www/$pvepackage
-yes|mk-build-deps --install --remove || echo "no debian/control"
-make clean && make deb && echo "$(date +%Y%m%d-%H:%M:%S) $pvepackage build succes" >>/var/www/build.log ||echo "$(date +%Y%m%d-%H:%M:%S) $pvepackage build failed" >>/var/www/build.log
+echo "$(date +%Y%m%d-%H:%M:%S) clone $pvepackage done" >> $buildlog
+
+#make
+echo "$(date +%Y%m%d-%H:%M:%S) making $pvepackage "  >> $buildlog
+cd $pvedir/$pvepackage
+
+
+#check mk-dep
+if [ -f "$pvedir/$pvepackage/debian/control" ];then
+yes|mk-build-deps --install --remove
+else
+echo "no debian/control"
+fi
+
+make clean && make deb && echo "$(date +%Y%m%d-%H:%M:%S) $pvepackage build succes" >>$buildlog ||echo "$(date +%Y%m%d-%H:%M:%S) $pvepackage build failed" >>$buildlog;
 done
-echo " $(date +%Y%m%d-%H:%M:%S) create package" >>/var/www/build.log
+
+echo " $(date +%Y%m%d-%H:%M:%S) create package" >>$buildlog
 mkdir /var/pve/pkgs
-find /var/pve/ -name "*.deb" -exec mv {} /var/pve/pkgs/ \;
+find /var/pve/ -name "*.deb" -exec mv {} $pvedir/pkgs/ \;
