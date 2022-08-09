@@ -57,7 +57,7 @@ zfsonlinux
 buildlog="/var/pve/build.log"
 pvedir="/var/pve"
 
-source(){
+aptsource(){
 rm /etc/apt/sources.list 
 echo "deb http://mirrors.ustc.edu.cn/debian/ bullseye main contrib non-free" >> /etc/apt/sources.list 
 echo "deb http://mirrors.ustc.edu.cn/debian/ bullseye-updates main contrib non-free" >> /etc/apt/sources.list 
@@ -113,7 +113,7 @@ libvirglrenderer-dev libzstd-dev python3-sphinx python3-sphinx-rtd-theme texi2ht
 abigail-tools libcurl4-openssl-dev libpam0g-dev python3-cffi python3-all-dev
 }
 
-source
+aptsource
 basepkg
 pvesource
 installpackage
