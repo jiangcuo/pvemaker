@@ -80,6 +80,9 @@ installcargo(){
 curl https://sh.rustup.rs -sSf >/rustset.sh 
 sh /rustset.sh  --default-host x86_64-unknown-linux-gnu --default-toolchain nightly --profile complete -y 
 cp -a ~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/ ~/.rustup/toolchains/system 
+#for arm64
+#sh /rustset.sh  --default-host aarch64-unknown-linux-gnu --default-toolchain nightly --profile complete -y 
+#cp -a ~/.rustup/toolchains/nightly-aarch64-unknown-linux-gnu/ ~/.rustup/toolchains/system  
 ln -s ~/.cargo/bin/* /usr/bin/ 
 rustup default system 
 }
@@ -110,8 +113,38 @@ libacl1-dev libaio-dev libattr1-dev libcap-ng-dev  libepoxy-dev libfdt-dev libgb
 libnuma-dev libpixman-1-dev libproxmox-backup-qemu0-dev  librbd-dev \
 libsdl1.2-dev    liburing-dev libusb-1.0-0-dev libusbredirparser-dev \
 libvirglrenderer-dev libzstd-dev python3-sphinx python3-sphinx-rtd-theme texi2html xfslibs-dev \
-abigail-tools libcurl4-openssl-dev libpam0g-dev python3-cffi python3-all-dev
+abigail-tools libcurl4-openssl-dev libpam0g-dev python3-cffi python3-all-dev  groff libdbus-1-dev libknet-dev libnozzle-dev \
+libreadline-dev libsnmp-dev libstatgrab-dev libsystemd-dev libxml2-dev doxygen graphviz \
+libnl-3-dev libnl-route-3-dev libsctp-dev libbz2-dev liblz4-dev liblzo2-dev libnss3-dev libnspr4-dev \
+libu2f-server-dev
+
 }
+
+installpackage_nopve(){
+apt update 
+apt install -y devscripts  build-essential librust-openssl-sys-dev git git-email pkg-config debhelper   \
+cmake bison dwarves flex libdw-dev libelf-dev libiberty-dev lz4 zstd librados-dev \
+libtest-mockmodule-perl  check libcmap-dev libcorosync-common-dev libcpg-dev libfuse-dev \
+libglib2.0-dev libquorum-dev librrd-dev librrds-perl \
+libsqlite3-dev libtest-mockmodule-perl libuuid-perl rrdcached sqlite3  rsync \
+libauthen-pam-perl libnet-ldap-perl  \
+libjs-marked esbuild quilt   bash-completion dh-apparmor docbook2x libapparmor-dev libcap-dev \
+libgnutls28-dev libseccomp-dev meson  libarchive-dev   libanyevent-perl   dh-python python3-all python3-setuptools python3-docutils \
+liblocale-po-perl  help2man libpam0g-dev \
+libjpeg62-turbo-dev libpng-dev unifont  libspice-protocol-dev libspice-server-dev  libcap-ng-dev \
+libio-multiplex-perl libjson-c-dev \
+libposix-strptime-perl  \
+libacl1-dev libaio-dev libattr1-dev libcap-ng-dev  libepoxy-dev libfdt-dev libgbm-dev libglusterfs-dev libiscsi-dev  libjemalloc-dev libjpeg-dev \
+libnuma-dev libpixman-1-dev   librbd-dev \
+libsdl1.2-dev    liburing-dev libusb-1.0-0-dev libusbredirparser-dev \
+libvirglrenderer-dev libzstd-dev python3-sphinx python3-sphinx-rtd-theme texi2html xfslibs-dev \
+abigail-tools libcurl4-openssl-dev libpam0g-dev python3-cffi python3-all-dev \
+nodejs pkg-js-tools node-colors node-commander libcrypt-ssleay-perl
+#for meson
+#wget http://ftp.cn.debian.org/debian/pool/main/m/meson/meson_0.61.1-1~bpo11+1_all.deb && dpkg -i meson_0.61.1-1~bpo11+1_all.deb
+}
+
+
 
 aptsource
 basepkg
@@ -120,6 +153,8 @@ installpackage
 installcargo
 installdebcargo
 
+git config --global https.proxy http://192.168.3.163:10809
+git config --global http.proxy http://192.168.3.163:10809
 
 rm $pvedir/* -rf
 touch $buildlog
@@ -146,3 +181,7 @@ done
 echo " $(date +%Y%m%d-%H:%M:%S) create package" >>$buildlog
 mkdir /var/pve/pkgs
 find /var/pve/ -name "*.deb" -exec mv {} $pvedir/pkgs/ \;
+
+
+#for lxcfs
+sed -i "s/x86_64/aarch64/g" debian/rules
