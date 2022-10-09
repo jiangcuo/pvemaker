@@ -49,6 +49,5 @@ ln -s ~/.cargo/bin/* /usr/bin/ && \
 rustup toolchain link system nightly-aarch64-unknown-linux-gnu && \
 rustup default system 
 
-COPY setup.sh /
 #pve-network need quorum ,so we need pve-cluster healty, use systemd for first init.
 CMD [ "/lib/systemd/systemd", "log-level=info", "unit=sysinit.target"]
