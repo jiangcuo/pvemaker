@@ -62,6 +62,13 @@ cargo build --release  && \
 rm /usr/bin/debcargo && \
 ln -s /usr/local/debcargo/target/release/debcargo /usr/bin/
 
+RUN apt clean -y && \   
+  rm -rf \
+  /var/cache/debconf/* \
+  /var/lib/apt/lists/* \
+  /var/log/* \
+  /var/tmp/* \
+  && rm -rf /tmp/*
 
 #pve-network need quorum ,so we need pve-cluster healty, use systemd for first init.
 CMD [ "/lib/systemd/systemd", "log-level=info", "unit=sysinit.target"]
