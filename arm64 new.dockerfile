@@ -51,8 +51,8 @@ ln -s ~/.cargo/bin/* /usr/bin/ && \
 cp -r ~/.rustup/toolchains/nightly-aarch64-unknown-linux-gnu/ ~/.rustup/toolchains/system && \
 rustup default system 
 
-RUN wget http://mirrors.ustc.edu.cn/proxmox/debian/devel/dists/bullseye/main/binary-amd64/dh-cargo_28~bpo11%2Bpve1_all.deb && \
-dpkg -i dh-cargo_28~bpo11%2Bpve1_all.deb
+RUN wget http://mirrors.ustc.edu.cn/proxmox/debian/devel/dists/bullseye/main/binary-amd64/dh-cargo_28~bpo11%2Bpve1_all.de && \
+dpkg -i dh-cargo_28~bpo11+pve1_all.deb
 
 #install debcargo
 RUN cd  /usr/local && \
