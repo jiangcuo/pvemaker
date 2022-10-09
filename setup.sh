@@ -192,7 +192,6 @@ cd $pvedir/$pvepackage
 #check mk-dep
 if [ -z  "$pvedir/$pvepackage/debian/control" ];then
 yes|mk-build-deps --install --remove
->>>>>>> 0596e783bd0496c85a8648b9d99b9720883a0dba
 else
 rm $srcdir/ 
 for pvepackage in ${pvepackages[@]};
@@ -273,4 +272,4 @@ find /var/pve/ -name "*.deb" -exec mv {} $pvedir/pkgs/ \;
 
 #for lxcfs
 sed -i "s/x86_64/aarch64/g" debian/rules
->>>>>>> 0596e783bd0496c85a8648b9d99b9720883a0dba
+
