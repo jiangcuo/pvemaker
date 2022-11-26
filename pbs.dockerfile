@@ -9,18 +9,18 @@ echo "deb http://mirrors.ustc.edu.cn/debian-security bullseye-security main cont
 RUN apt-get update && \
 apt-get install wget sudo systemctl  curl gnupg  ca-certificates -y
 
-RUN echo "deb http://10.13.14.10/proxmox/ pbsarm main" >>/etc/apt/sources.list.d/pbs.list && \
-curl http://10.13.14.10/proxmox/gpg.key |apt-key add - 
+RUN echo "deb https://foxi.buduanwang.vip/pan/foxi/Virtualization/proxmox/foxi/ pbsarm main" >>/etc/apt/sources.list.d/pbs.list && \
+curl -L https://foxi.buduanwang.vip/pan/foxi/Virtualization/proxmox/foxi/gpg.key |apt-key add - 
 
 RUN apt-get update && \
 DEBIAN_FRONTEND=noninteractiv apt-get --no-install-recommends  install proxmox-backup-server -y
 
-RUN echo "root:root"|chpasswd
+RUN echo "root:root"|chpasswd 
 
-COPY setup.sh /
-RUN chmod a+x /setup.sh
+COPY pbssetup.sh /
+RUN chmod a+x /pbssetup.sh
 STOPSIGNAL SIGINT
-CMD ["bash","/setup.sh"]
+CMD ["bash","/pbssetup.sh"]
 
 
 
@@ -45,7 +45,7 @@ DEBIAN_FRONTEND=noninteractiv apt-get --no-install-recommends  install proxmox-b
 
 RUN echo "root:root"|chpasswd
 
-COPY setup.sh /
-RUN chmod a+x /setup.sh
+COPY pbssetup.sh /
+RUN chmod a+x /pbssetup.sh
 STOPSIGNAL SIGINT
-CMD ["bash","/setup.sh"]
+CMD ["bash","/pbssetup.sh"]
