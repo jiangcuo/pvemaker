@@ -24,7 +24,7 @@ RUN ARCH=$(dpkg --print-architecture) \
     curl -l -o /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg $PVE_APT/proxmox/debian/proxmox-release-bookworm.gpg; \
 else  \
     echo "deb $PVE_APT/proxmox/debian/pve bookworm port" >> /etc/apt/sources.list;  \
-    echo "deb $PVE_APT/proxmox/debian/pve bookworm port" >> /etc/apt/sources.list; \
+    echo "deb $PVE_APT/proxmox/debian/devel bookworm port" >> /etc/apt/sources.list; \
     curl -l -o /etc/apt/trusted.gpg.d/pveport.gpg $PVE_APT/proxmox/debian/pveport.gpg; \
 fi
 

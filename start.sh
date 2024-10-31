@@ -7,6 +7,7 @@ errlog(){
 
 exec_build(){
 	echo "install depends"
+	apt update
         yes |mk-build-deps --install --remove
         if [ -f "Makefile" ];then
 		echo "clean "
